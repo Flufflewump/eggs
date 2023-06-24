@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+/.vs/eggs/v16
+/eggs.vcxproj.user
+/eggs.vcxproj.filters
+/eggs.vcxproj
+/eggs.sln
+/x64/Debug
