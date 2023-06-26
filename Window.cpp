@@ -2,64 +2,58 @@
 
 Window::Window()
 {
-    init();
-}
 
-bool Window::loadImage(const char* path)
-{
-    bool success = true;
-
-    displayImage = SDL_LoadBMP(path);
-
-    if (displayImage == NULL)
+    sdlWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    if (sdlWindow == NULL)
     {
-        printf("Unable to load image %s! SDL Error: %s\n", path, SDL_GetError());
-        success = false;
+        printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
     }
+    else
+    {
+        //Create renderer for window
+        renderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        if (renderer == NULL)
+        {
+            printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+        }
+        else
+        {
+            //Initialize renderer color
+            SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-    return success;
+            //Initialize PNG loading
+            int imgFlags = IMG_INIT_PNG;
+            if (!(IMG_Init(imgFlags) & imgFlags))
+            {
+                printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+            }
+        }
+    }
 }
 
-void Window::showImage()
+Window::~Window()
 {
-    SDL_BlitSurface(displayImage, NULL, windowSurface, NULL);
-    SDL_UpdateWindowSurface(window);
+    close();
+}
+
+void Window::update()
+{
+     SDL_RenderPresent(renderer);
 }
 
 void Window::close()
 {
-    SDL_FreeSurface(displayImage);
-    displayImage = NULL;
+    SDL_DestroyRenderer(renderer);
+    renderer = NULL;
 
-    SDL_DestroyWindow(window);
-    window = NULL;
+    SDL_DestroyWindow(sdlWindow);
+    sdlWindow = NULL;
 
+    IMG_Quit();
     SDL_Quit();
 }
 
-bool Window::init()
+SDL_Renderer* Window::getRenderer()
 {
-	bool success = true;
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
-        success = false;
-    }
-    else
-    {
-        window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-        if (window == NULL)
-        {
-            printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
-            success = false;
-        }
-        else
-        {
-            windowSurface = SDL_GetWindowSurface(window);
-        }
-    }
-
-    return success;
-
-	return false;
+    return renderer;
 }

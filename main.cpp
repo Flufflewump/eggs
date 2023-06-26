@@ -1,18 +1,33 @@
-#include <SDL.h>
 #include <stdio.h>
+#include <SDL.h>
 
-#include "Window.h"
+#include "GameState.h"
+#include "MenuState.h"
 
 int main(int argc, char* args[])
 {
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	{
+		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+	}
 
 	Window window;
 
-	window.loadImage("img.bmp");
-	window.showImage();
+	MenuState menuState(window.getRenderer());
 
-	//Hack to get window to stay up
-	SDL_Event e; bool quit = false; while (quit == false) { while (SDL_PollEvent(&e)) { if (e.type == SDL_QUIT) quit = true; } }
+	GameState* currentState = &menuState;
+
+	while (!currentState->quit) {
+		currentState->handleInput();
+		currentState->update();
+		currentState->render();
+		window.update();
+
+		if (currentState->getNextState() != GameState::State::None) {
+
+		}
+	}
+
 
 	window.close();
 
