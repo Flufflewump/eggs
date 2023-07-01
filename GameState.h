@@ -11,14 +11,14 @@ public:
 	enum class State {
 		None,
 		MenuState,
-		PlayState
+		CardState
 	};
 
 	GameState(SDL_Renderer* renderer);
 	~GameState();
 
 	virtual void handleInput() = 0;
-	virtual void update();
+	virtual void update(Uint64 frameTime);
 	virtual void render();
 
 	virtual void enter();

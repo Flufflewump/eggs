@@ -11,7 +11,7 @@ GameState::~GameState()
 	}
 }
 
-void GameState::update()
+void GameState::update(Uint64 frameTime)
 {
 }
 
@@ -26,7 +26,11 @@ void GameState::render()
 		curSprite = static_cast<SpriteComponent*>(entity->getComponent(ComponentType::Sprite));
 		if (curSprite != NULL) {
 			curPosition = static_cast<PositionComponent*>(entity->getComponent(ComponentType::Position));
-			curSprite->texture->render(curPosition->x + curSprite->offsetX, curPosition->y + curSprite->offsetY, curSprite->clipX, curSprite->clipY, curSprite->clipW, curSprite->clipH);
+			for (int i = 0; i < curSprite->textures.size(); i++) {
+				Texture* curTexture = curSprite->textures[i];
+				curTexture->render(curPosition->x + curSprite->offsetX[i], curPosition->y + curSprite->offsetY[i],
+									curSprite->clipX[i], curSprite->clipY[i], curSprite->clipW[i], curSprite->clipH[i]);
+			}
 		}
 	}
 }

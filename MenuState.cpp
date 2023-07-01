@@ -6,13 +6,13 @@ MenuState::MenuState(SDL_Renderer* renderer) : GameState(renderer), playTexture(
     exitTexture.loadFromFile("data/ExitButtonBase.png");
 
     Entity* playButton = new Entity;
-    playButton->addPosition(200, 200);
+    playButton->addPosition(200, 200, 300, 75);
     playButton->addSprite(&playTexture, 0, 0, 300, 75);
 
     playButton->addClickable(ClickAction::Play);
     
     Entity* exitButton = new Entity;
-    exitButton->addPosition(200, 400);
+    exitButton->addPosition(200, 400, 300, 75);
     exitButton->addSprite(&exitTexture, 0, 0, 300, 75);
     exitButton->addClickable(ClickAction::Exit);
 
@@ -53,14 +53,14 @@ void MenuState::handleInput()
                     curSprite = static_cast<SpriteComponent*>(entity->getComponent(ComponentType::Sprite));
                     
                     // Check if click is in bounds of the entity
-                    if (mouseX > curPosition->x + curSprite->offsetX && mouseY > curPosition->y + curSprite->offsetY
-                        && mouseX < curPosition->x + curSprite->offsetX + curSprite->width && mouseY < curPosition->y + curSprite->offsetY + curSprite->height) {
+                    if (mouseX > curPosition->x && mouseY > curPosition->y
+                        && mouseX < curPosition->x + curPosition->width && mouseY < curPosition->y + curPosition->height) {
                         switch (curClickable->action) {
                         case ClickAction::Exit:
                             quit = true;
                             break;
                         case ClickAction::Play:
-                            printf("Play button pressed\n");
+                            
                             break;
                         }
                     }
@@ -70,7 +70,7 @@ void MenuState::handleInput()
     }
 }
 
-void MenuState::update()
+void MenuState::update(Uint64 frameTime)
 {
     
 }

@@ -3,6 +3,7 @@
 
 #include "GameState.h"
 #include "MenuState.h"
+#include "CardState.h"
 
 int main(int argc, char* args[])
 {
@@ -14,18 +15,30 @@ int main(int argc, char* args[])
 	Window window;
 
 	MenuState menuState(window.getRenderer());
+	CardState cardState(window.getRenderer());
 
-	GameState* currentState = &menuState;
+	//GameState* currentState = &menuState;
+	GameState* currentState = &cardState;
+
+	Uint64 frameStart, frameTime = 0;
 
 	while (!currentState->quit) {
+		frameStart = SDL_GetTicks64();
 		currentState->handleInput();
-		currentState->update();
+		currentState->update(frameTime);
+
 		currentState->render();
+
 		window.update();
 
 		if (currentState->getNextState() != GameState::State::None) {
 
 		}
+
+		if (SDL_GetTicks64() - frameStart < TICKS_PER_FRAME) {
+			SDL_Delay(SDL_GetTicks64() - frameStart);
+		}
+		frameTime = SDL_GetTicks64() - frameStart;
 	}
 
 

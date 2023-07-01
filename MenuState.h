@@ -12,7 +12,7 @@ public:
 	~MenuState();
 
 	void handleInput();
-	void update();
+	void update(Uint64 frameTime);
 
 private:
 	Texture playTexture;

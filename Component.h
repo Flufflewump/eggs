@@ -5,12 +5,20 @@
 enum class ComponentType {
 	Position,
 	Sprite,
-	Clickable
+	Clickable,
+	Card
 };
 
 enum class ClickAction {
 	Exit,
-	Play
+	Play,
+	Card
+};
+
+enum class CardType {
+	Attack,
+	Defend,
+	Heal
 };
 
 struct Component {
@@ -18,16 +26,21 @@ struct Component {
 };
 
 struct PositionComponent : public Component {
-	int x, y;
+	int x, y, width, height;
 };
 
 struct SpriteComponent : public Component {
-	Texture* texture;
-	int offsetX, offsetY, width, height;
-	int clipX, clipY, clipW, clipH;
+	std::vector<Texture*> textures;
+	std::vector<int> offsetX, offsetY, width, height;
+	std::vector<int> clipX, clipY, clipW, clipH;
 };
 
 struct ClickableComponent : public Component {
 	ClickAction action;
 	bool clicked;
+};
+
+struct CardComponent : public Component {
+	CardType cardType;
+	bool onCursor;
 };
