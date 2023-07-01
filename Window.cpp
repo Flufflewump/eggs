@@ -3,7 +3,7 @@
 Window::Window()
 {
 
-    sdlWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+    sdlWindow = SDL_CreateWindow("Untitled Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (sdlWindow == NULL)
     {
         printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
